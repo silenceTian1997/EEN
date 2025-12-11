@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <title>CGL投资有限公司</title>
+    <meta
+      name="keywords"
+      content="招商局集团·中国南山境外工业物流不动产旗舰品牌"
+    />
+  </head>
+  <body>
+    <div class="container-bg">
+      <div class="tab-bar">
+        <div class="tab-item tab-1 tab-active" data-bg="bg-1">
+          <img class="title-img" src="./asset/title-1.png" alt="" />
+        </div>
+        <div class="tab-item tab-2" data-bg="bg-2">
+          <img class="title-img" src="./asset/title-2.png" alt="" />
+        </div>
+        <div class="tab-item tab-3" data-bg="bg-3">
+          <img class="title-img" src="./asset/title-3.png" alt="" />
+        </div>
+      </div>
+      <div class="bg-container">
+        <img class="bg-img img" src="./asset/bg-1.png" />
+        <div class="swiper">
+          <div class="swiper-item active">
+            <img class="swiper-img" src="./asset/sw-1.png" />
+          </div>
+          <div class="swiper-item">
+            <img class="swiper-img" src="./asset/sw-2.png" />
+          </div>
+          <div class="swiper-item">
+            <img class="swiper-img" src="./asset/sw-3.png" />
+          </div>
+        </div>
+      </div>
+
+      <div class="concat-me"></div>
+      <div class="to-top"></div>
+
+      <div class="popup-mask">
+        <div class="popup-content">
+          <div class="close-btn" onclick="closeMask()"></div>
+          <img src="./asset/alert.png" alt="" />
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    // REM适配方案 - 基于设计稿宽度320px
+    (function (win, doc) {
+      var docEl = doc.documentElement;
+      var resizeEvt =
+        "orientationchange" in window ? "orientationchange" : "resize";
+
+      function recalc() {
+        var clientWidth = docEl.clientWidth;
+        if (!clientWidth) return;
+
+        // 设计稿为320px，当设备宽度为320px时，1rem = 32px
+        docEl.style.fontSize = 32 * (clientWidth / 320) + "px";
+      }
+
+      if (!doc.addEventListener) return;
+      win.addEventListener(resizeEvt, recalc, false);
+      doc.addEventListener("DOMContentLoaded", recalc, false);
+    })(window, document);
+
+    // 添加Tab切换功能
+    document.addEventListener("DOMContentLoaded", function () {
+      const tabItems = document.querySelectorAll(".tab-item");
+      const bgImg = document.querySelector(".bg-img");
+
+      tabItems.forEach((item) => {
+        item.addEventListener("click", function () {
+          // 移除所有tab的active类
+          tabItems.forEach((tab) => tab.classList.remove("tab-active"));
+
+          // 为点击的tab添加active类
+          this.classList.add("tab-active");
+
+          // 切换背景图片
+          const bgName = this.getAttribute("data-bg");
+          bgImg.src = `./asset/${bgName}.png`;
+        });
+      });
+
+      // 添加滚动到顶部功能
+      const toTopButton = document.querySelector(".to-top");
+      if (toTopButton) {
+        toTopButton.addEventListener("click", function () {
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+        });
+      }
+
+      // 添加轮播功能
+      const swiperItems = document.querySelectorAll(".swiper-item");
+      let currentIndex = 0;
+
+      function switchImage() {
+        // 移除当前活动项的active类
+        swiperItems[currentIndex].classList.remove("active");
+
+        // 计算下一张图片索引
+        currentIndex = (currentIndex + 1) % swiperItems.length;
+
+        // 为下一张图片添加active类
+        swiperItems[currentIndex].classList.add("active");
+      }
+
+      // 设置初始状态：只有第一张图片有active类
+      // (初始状态已在HTML中设置)
+
+      // 每2秒切换一次图片
+      setInterval(switchImage, 2000);
+
+      const closeMask = () => {
+        popupMask.addEventListener("click", function (e) {
+          if (e.target === popupMask) {
+            popupMask.style.opacity = "0";
+            setTimeout(() => {
+              popupMask.style.display = "none";
+            }, 300);
+          }
+        });
+      };
+      // 添加弹窗显示功能
+      const concatMeButton = document.querySelector(".concat-me");
+      const popupMask = document.querySelector(".popup-mask");
+      if (concatMeButton && popupMask) {
+        concatMeButton.addEventListener("click", function () {
+          popupMask.style.display = "block";
+          setTimeout(() => {
+            popupMask.style.opacity = "1";
+          }, 10);
+        });
+
+        // 点击蒙版关闭弹窗
+        closeMask();
+      }
+    });
+
+    // 添加关闭弹窗函数
+    function closeMask() {
+      const popupMask = document.querySelector(".popup-mask");
+      if (popupMask) {
+        popupMask.style.opacity = "0";
+        setTimeout(() => {
+          popupMask.style.display = "none";
+        }, 300);
+      }
+    }
+  </script>
+
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    .img {
+      width: 100%;
+      pointer-events: none;
+    }
+    .container-bg {
+      min-height: 100vh;
+      position: relative;
+    }
+    .tab-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      width: 100%;
+      height: 0.9rem; /* 32px */
+      z-index: 1;
+    }
+    .tab-item {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #e09b9e;
+      transition: background-color 0.3s ease; /* 添加背景颜色过渡动画 */
+    }
+    .tab-item.tab-active {
+      background-color: #b82b30;
+    }
+    .tab-item .title-img {
+      width: 1.6rem; /* 52px */
+    }
+
+    .bg-container {
+      position: relative;
+    }
+
+    .swiper {
+      width: 100%;
+      height: 6.40625rem; /* 205px */
+      position: absolute;
+      left: 0;
+      top: 5.3125rem; /* 170px */
+      overflow: hidden;
+    }
+    .swiper .swiper-item {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .swiper .swiper-item.active {
+      opacity: 1;
+    }
+    .swiper .swiper-item .swiper-img {
+      width: 100%;
+    }
+    .concat-me {
+      position: fixed;
+      right: 0.2rem; /* 12px  */
+      top: 40%;
+      width: 1.5625rem; /* 50px -> 1.5625rem */
+      height: 1.5625rem; /* 50px -> 1.5625rem */
+      background: 100% url("./asset/concat-me.png") no-repeat;
+      background-size: 100%;
+      cursor: pointer;
+      z-index: 10;
+      animation: breathe 2s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+    }
+    .to-top {
+      position: absolute;
+      bottom: 0.4rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50%;
+      height: 1.5625rem; /* 50px */
+      cursor: pointer; /* 添加鼠标指针样式 */
+      background: url("./asset/to-top.png") no-repeat center;
+      background-size: contain;
+    }
+
+    /* 添加弹窗样式 */
+    .popup-mask {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+    }
+
+    .popup-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 0.15625rem; /* 5px */
+      width: 85%;
+      max-width: 400px;
+    }
+
+    .popup-content img {
+      width: 100%;
+      height: auto;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 1.5625rem;
+      height: 1.5625rem;
+    }
+  </style>
+</html>
